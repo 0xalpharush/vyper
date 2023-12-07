@@ -77,6 +77,8 @@ def process_inputs(wrapped_fn):
 class BuiltinFunction:
     _has_varargs = False
     _kwargs: Dict[str, KwargSettings] = {}
+    _inputs = None
+    _return_type = None
 
     # helper function to deal with TYPE_DEFINITIONs
     def _validate_single(self, arg, expected_type):
@@ -140,4 +142,17 @@ class BuiltinFunction:
         return {i.arg: self._kwargs[i.arg].typ for i in node.keywords}
 
     def __repr__(self):
-        return f"(builtin) {self._id}"
+        args = ""
+        kwargs = ""
+        ret = ""
+        if self._inputs:
+            args =  ", ".join([repr(typ) for _, typ in self._inputs])
+        if self._kwargs:
+            kwargs = ", ".join([repr(k.typ) for k in self._kwargs.values()])
+        if self._return_type:
+            ret = f" -> {self._return_type}"
+        return f"(builtin) {self._id}({args}, {kwargs}) returns {ret}"
+
+
+    def to_json(self):
+        return repr(self)

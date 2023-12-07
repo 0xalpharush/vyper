@@ -152,6 +152,10 @@ class BytesT(_BytestringT):
     def abi_type(self) -> ABIType:
         return ABI_Bytes(self.length)
 
+    def __repr__(self):
+        return "dsfsfsd"
+
+
 
 class StringT(_BytestringT):
     _id = "String"
@@ -160,3 +164,8 @@ class StringT(_BytestringT):
     @property
     def abi_type(self) -> ABIType:
         return ABI_String(self.length)
+
+    def __repr__(self):
+        return self._id
+
+
